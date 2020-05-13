@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+<h1>Genres</h1>
+<ul>
+{% for item in genrelist %}
+    <li>{{ item.name }} </li>
+{% endfor %}
+</ul>
+<a href="{{ url_for('genres_form') }}" class="btn btn-primary">Add a new genre!</a>
+
+</div>
+
+{% endblock %}
+

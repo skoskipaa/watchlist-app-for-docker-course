@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+<table class="table table-striped">
+    <tr>
+        <th>Watchlist</th>
+        <th>Created</th>
+    </tr>
+    {% for list in lists %}
+    <tr>
+        <td><a href="{{ url_for('content_for_list', list_id=list.id) }}">{{ list.name }}</a></td>
+        <td>{{ list.date_created }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+<b>Total length of your watchlists: {{ total_length }} minutes</b>
+{% endblock %}

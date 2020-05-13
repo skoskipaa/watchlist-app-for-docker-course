@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Add a show or a movie</h1>
+<form method="POST" action="{{ url_for('content_create', list_id=list_id) }}">    
+  <div class="form-group">
+    <table>
+      <tr>
+        <td>
+          {{ form.name.label }}
+        </td>
+        <td>
+          {{ form.name }}
+        </td>
+      </tr>
+        <td>
+          <ul>
+            {% for error in form.name.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+      <tr>
+        <td>
+          {{ form.length.label }}
+        </td>
+        <td>
+          {{ form.length }}
+        </td>
+      </tr> 
+        <td>
+            <ul>
+              {% for error in form.length.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+        </td>
+    
+
+      <tr>
+        <td>
+          {{ form.category.label }}
+        </td>
+        <td>
+          {{ form.category }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.cdn.label }}
+        </td>
+        <td>
+          {{ form.cdn }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button type="submit" class="btn btn-primary">Add!</button>
+        </td>
+        <td colspan="2">
+          <a href="{{ url_for('content_for_list', list_id=list_id) }}" id="cancel" name="cancel" class="btn btn-secondary">Cancel</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+                <h2>{{ name }}</h2>
+        </div>
+        <div class="col-3">
+            <a href="{{ url_for('content_form', list_id=list_id) }}" class="btn btn-primary">Add a show or a movie</a>
+        </div>
+        <div class="col-3">
+                <a href="{{ url_for('lists_update', list_id=list_id) }}" class="btn btn-primary">Rename this watchlist</a>
+        </div>
+        <div class="col-3">
+            <form action="{{ url_for('lists_delete', list_id=list_id) }}" method="POST">
+                <input type="submit" value="Delete watchlist" class="btn btn-danger" onclick="return confirm('Delete this watchlist and its contents?')"/>
+            </form>
+        </div>
+    </div>
+</div>
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Length</th>
+        <th>Genre</th>
+        <th>Content provider</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for item in contentlist %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.length }}</td>
+        <td> {% for genre in item.category %}
+            <body>{{ genre.name }}</body>
+          {% endfor %}</td>
+        <td>{{ item.cdn }}</td>
+        <td><a href="{{ url_for('content_update', content_id=item.id) }}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+            <form action="{{url_for('content_delete', content_id=item.id)}}" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+        </td>    
+    </tr>
+    {% endfor %}
+</table>
+<b>Total length: {{ watchlist_length }} minutes</b>
+
+{% endblock %}
