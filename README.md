@@ -1,4 +1,4 @@
-# Watchlist app (slightly modified for Docker course exercise)
+# Watchlist app (modified for Docker course exercises)
 
 ### Requirements: 
 * Python 3.5 (or higher)
