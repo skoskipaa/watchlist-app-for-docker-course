@@ -1,14 +1,10 @@
 version: 2.1
-
 orbs:
-  heroku: circleci/heroku@1.0.1
+  docker: circleci/docker@1.0.0
 workflows:
-  heroku_deploy:
+  deploy:
     jobs:
-      - heroku/deploy-via-git
-parameters:
-  app-name:
-    default: HEROKU_APP_NAME
-  api-key:
-    default: $HEROKU_API_KEY
-
+      - docker/publish:
+          image: skoskipaa/watchlist
+          tag: 'latest'
+          
