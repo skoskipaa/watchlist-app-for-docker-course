@@ -1,20 +1,36 @@
-version: 2.1
-orbs:
-  docker: circleci/docker@1.0.0
-  heroku: circleci/heroku@0.0.10.
-workflows:
-  deploy:
-    jobs:
-      - docker/publish:
-          image: skoskipaa/watchlist
-          tag: 'latest'
-  heroku_deploy:
-    jobs:
-      - build
-      - heroku/deploy-via-git:
-          requires:
-            - build
+version: 2
 jobs:
   build:
-    docker:
-      - image: skoskipaa/watchlist          
+    machine: true
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build Docker image
+          command: docker build -t skoskipaa/watchlist .
+
+      - run:
+          name: Push to Hub
+          command: |
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker push skoskipaa/watchlist
+
+      - run:
+          name: Deploy to Heroku
+          command: |
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag skoskipaa/watchlist registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+#version: 2.1
+#orbs:
+#  docker: circleci/docker@1.0.0
+
+#workflows:
+#  deploy:
+#    jobs:
+#      - docker/publish:
+#          image: skoskipaa/watchlist
+#          tag: 'latest'
+
