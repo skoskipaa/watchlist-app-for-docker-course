@@ -1,27 +1,40 @@
 version: 2
-jobs:
-  build:
-    machine: true
 
-    steps:
-      - checkout
+  jobs:
+    build:
+      machine: true
 
-      - run:
-          name: Build Docker image
-          command: docker build -t skoskipaa/watchlist .
+      steps:
+        - checkout
 
-      - run:
-          name: Push to Hub
-          command: |
+        - run:
+            name: Build Docker image
+            command: docker build -t skoskipaa/watchlist .
+
+        - run:
+            name: Push to Hub
+            command: |
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             docker push skoskipaa/watchlist
+       
+   deploy:
+     docker:
+       - image: skoskipaa/watchlist
+     steps:
+       - checkout
+       - run:
+           name: Deploy Master to Heroku
+           command: |
+             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
-      - run:
-          name: Deploy to Heroku
-          command: |
-            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
-            docker tag skoskipaa/watchlist registry.heroku.com/$HEROKU_APP_NAME/web
-            docker push registry.heroku.com/$HEROKU_APP_NAME/web
-            heroku container:login
-            heroku container:release web
-
+ workflows:
+   version: 2
+   build-deploy:
+     jobs:
+       - build
+       - deploy:
+           requires:
+             - build # only run deploy-via-git job if the build job has completed
+           filters:
+             branches:
+               only: master # only run deploy-via-git job on master branch
