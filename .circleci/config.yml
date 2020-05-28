@@ -12,8 +12,8 @@ jobs:
         - run:
             name: Push to Hub
             command: |
-            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push skoskipaa/watchlist
+              docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+              docker push skoskipaa/watchlist
        
     deploy:
       docker:
